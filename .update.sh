@@ -56,5 +56,5 @@ then
     exit $ERR_BUILD
 fi
 
-echo "✅ Build successful. Start bot: ./dist/tgbot/tgbot"
+echo "✅ Build successful."
 exit 0

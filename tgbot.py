@@ -1,4 +1,5 @@
 import os
+import subprocess
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -28,17 +29,66 @@ async def ready(application):
 async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     cmd = update.message.text.strip()
 
-    if cmd == '!update':
-        # Update repo.
-        return_code = os.system('bash .update.sh')
-    else:
-        # General shell command.
-        user_id = str(update.effective_user.id)
-        if user_id != CHAT_ID:
-            await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
+    # Check length of command.
+    len_cmd = len(cmd)
+    if len_cmd < 2:
+        await update.message.reply_text(f'❌ Command too short (len={len_cmd}).')
+        return
+
+    # Determine return type.
+    if not cmd[0] in ['0', '1', '2']:
+        await update.message.reply_text(
+        f'''❌ First character must be a number indicating the return type:
+0: returnvalue
+1: stdout
+2: stderr''')
+        return
+    return_type = int(cmd[0])
+    cmd = cmd[1:]
+    
+    try:
+        if cmd == '!update':
+            # Update repo.
+            result = subprocess.run(
+                    ['bash', '.update.sh'],
+                    capture_output=True,
+                    text=True)
+        else:
+            # General shell command.
+            user_id = str(update.effective_user.id)
+            if user_id != CHAT_ID:
+                await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
+                return
+
+            result = subprocess.run(
+                    cmd.split(),
+                    capture_output=True,
+                    text=True)
+
+        # Get return text.
+        if return_type == 0:
+            return_text = str(result.returncode)
+        elif return_type == 1:
+            return_text = result.stdout
+        else:
+            return_text = result.stderr
+
+    except Exception as e:
+        return_text = f'❌ An exception occured: {e}'
+
+    # Split long text into separate messages.
+    if return_text == '':
+        return_text = '[no return text]'
+
+    while True:
+        if len(return_text) < 4096:
+            if len(return_text) > 0:
+                await update.message.reply_text(return_text)
             return
-        return_code = os.system(cmd)
-    await update.message.reply_text(str(return_code))
+
+        send_text = return_text[0:4096]
+        return_text = return_text[4096:]
+        await update.message.reply_text(send_text)
 
 
 # Create application.

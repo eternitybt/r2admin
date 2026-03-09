@@ -13,7 +13,7 @@ then
     . venv/bin/activate
 else
     echo "⚠️ Virtual environment does not exist. Creating it now."
-    rm -rf venv && python -m venv venv
+    rm -rf venv && python3 -m venv venv
     if [ ! -e "venv/bin/activate" ]
     then
         echo "❌ Failed to create virtual environment."

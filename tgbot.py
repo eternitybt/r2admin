@@ -10,6 +10,7 @@ from telegram.ext import (
 
 CHAT_ID = os.getenv('TG_CHAT_ID')
 TOKEN = os.getenv('TG_CRON_BOT_TOKEN')
+TIMEOUT_SEC = 600
 
 
 # Print ready message.
@@ -27,6 +28,7 @@ async def ready(application):
 
 # Handle command.
 async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global TIMEOUT_SEC
     cmd = update.message.text.strip()
 
     # Check length of command.
@@ -36,41 +38,72 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     # Determine return type.
-    if not cmd[0] in ['0', '1', '2']:
+    if not cmd[0] in ['0', '1', '2', '3', '4']:
         await update.message.reply_text(
         f'''❌ First character must be a number indicating the return type:
 0: returnvalue
 1: stdout
-2: stderr''')
+2: stderr
+3: set timeout [s]
+4: append to a.txt''')
         return
     return_type = int(cmd[0])
     cmd = cmd[1:]
-    
-    try:
-        # Authorize request.
-        user_id = str(update.effective_user.id)
-        if user_id != CHAT_ID:
-            await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
-            return
 
+    # Set timeout.
+    if return_type == 3:
+        try:
+            TIMEOUT_SEC = int(cmd)
+            return_text = f'TIMEOUT_SEC: {TIMEOUT_SEC}'
+        except:
+            return_text = f'❌ Error modifying timeout. TIMEOUT_SEC: {TIMEOUT_SEC}.'
+
+    elif return_type == 4:
+        try:
+            with open('a.txt', 'a') as f:
+                f.write(cmd + '\n')
+            return_text = '✅ Success.'
+        except:
+            return_text = f'❌ Error writing to a.txt.'
+
+    else:
         # Execute command.
-        result = subprocess.run(
+        try:
+            # Authorize request.
+            user_id = str(update.effective_user.id)
+            if user_id != CHAT_ID:
+                await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
+                return
+
+            #result = subprocess.run(
+            #        cmd.split(),
+            #        capture_output=True,
+            #        text=True)
+            result = subprocess.run(
                 cmd.split(),
                 capture_output=True,
-                text=True)
+                text=True,
+                encoding="utf-8",
+                errors="replace",       # avoid UnicodeDecodeError crashes
+                cwd=None,               # cwd = script dir (works also with pyinstaller)
+                timeout=TIMEOUT_SEC,
+                check=False             # don't raise exception on non-zero exit
+            )
 
-        # Get return text.
-        if return_type == 0:
-            return_text = str(result.returncode)
-        elif return_type == 1:
-            return_text = result.stdout
-        else:
-            return_text = result.stderr
+            # Get return text.
+            if return_type == 0:
+                return_text = str(result.returncode)
+            elif return_type == 1:
+                return_text = result.stdout
+            else:
+                return_text = result.stderr
 
-    except Exception as e:
-        return_text = f'❌ An exception occured: {e}'
+        except subprocess.TimeoutExpired:
+            return_text = f'❌ Time-out after {TIMEOUT_SEC}s'
+        except Exception as e:
+            return_text = f'❌ Exception: {str(e)}'
 
-    # Split long text into separate messages.
+    # Send return text. Split long text into separate messages.
     if return_text == '':
         return_text = '[no return text]'
 

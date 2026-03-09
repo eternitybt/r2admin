@@ -12,7 +12,7 @@ CHAT_ID = os.getenv('TG_CHAT_ID')
 TOKEN = os.getenv('TG_CRON_BOT_TOKEN')
 
 
-# Print "ready" message.
+# Print ready message.
 async def ready(application):
     try:
         await application.bot.send_message(
@@ -22,7 +22,7 @@ async def ready(application):
         print(f'Ready message sent (chat id: {CHAT_ID}).')
 
     except Exception as e:
-        print('"Failed to send ready message: {e}')
+        print(f'Failed to send ready message: {e}')
 
 
 # Handle command.

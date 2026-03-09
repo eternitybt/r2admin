@@ -47,23 +47,17 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     cmd = cmd[1:]
     
     try:
-        if cmd == '!update':
-            # Update repo.
-            result = subprocess.run(
-                    ['bash', '.update.sh'],
-                    capture_output=True,
-                    text=True)
-        else:
-            # General shell command.
-            user_id = str(update.effective_user.id)
-            if user_id != CHAT_ID:
-                await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
-                return
+        # Authorize request.
+        user_id = str(update.effective_user.id)
+        if user_id != CHAT_ID:
+            await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
+            return
 
-            result = subprocess.run(
-                    cmd.split(),
-                    capture_output=True,
-                    text=True)
+        # Execute command.
+        result = subprocess.run(
+                cmd.split(),
+                capture_output=True,
+                text=True)
 
         # Get return text.
         if return_type == 0:

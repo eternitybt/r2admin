@@ -10,10 +10,10 @@ API_HASH = sys.argv[2]
 PHONE = sys.argv[3]
 BOT_USERNAME = sys.argv[4]
 
-print(f'API_ID: {API_ID}')
-print(f'API_HASH: {API_HASH}')
-print(f'PHONE: {PHONE}')
-print(f'BOT_USERNAME: {BOT_USERNAME}')
+print(f'API_ID: {API_ID}', flush=True)
+print(f'API_HASH: {API_HASH}', flush=True)
+print(f'PHONE: {PHONE}', flush=True)
+print(f'BOT_USERNAME: {BOT_USERNAME}', flush=True)
 
 # Create client.
 client = TelegramClient('userbot_session', API_ID, API_HASH)
@@ -128,15 +128,15 @@ async def main():
     @client.on(events.NewMessage(from_users=BOT_USERNAME))
     async def handler(event):
         cmd = event.message.text.strip()
-        print(f'Received from bot: {cmd}')
+        print(f'Received from bot: {cmd}', flush=True)
         return_msgs = handle_cmd(cmd)
-        print(return_msgs)
+        print(return_msgs, flush=True)
         for msg in return_msgs:
             #await event.reply(msg)
             await client.send_message(bot_entity, msg)
 
 
-    print(f'✅ Connected with bot {BOT_USERNAME}.')
+    print(f'✅ Connected with bot {BOT_USERNAME}.', flush=True)
     await client.run_until_disconnected()
 
 # Run the client

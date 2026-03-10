@@ -163,7 +163,7 @@ try:
         
         # Send ready message to bot.
         client.send_message(bot_entity, 'ready')
-        print(f'✅ Connected with bot R2-D2. Press ⌘+Q to quit.', flush=True)
+        print(f'✅ R2-D2 connected. Waiting for commands. Press ⌘+Q to quit.', flush=True)
         
         # Main loop.
         client.loop.run_until_complete(main())

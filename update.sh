@@ -49,13 +49,13 @@ then
     exit $ERR_GIT_UPDATE
 fi
 
-# Build r2bot.
-rm -rf dist build *.spec && pyinstaller --onedir r2bot.py && xattr -dr com.apple.quarantine ./dist/r2bot/r2bot
-if [ $? -gt 0 ]
-then
-    echo "❌ Failed to build r2bot."
-    exit $ERR_BUILD
-fi
+## Build r2bot.
+#rm -rf dist build *.spec && pyinstaller --onedir r2bot.py && xattr -dr com.apple.quarantine ./dist/r2bot/r2bot
+#if [ $? -gt 0 ]
+#then
+#    echo "❌ Failed to build r2bot."
+#    exit $ERR_BUILD
+#fi
 
 # Build c3bot.
 pyinstaller --onedir c3bot.py && xattr -dr com.apple.quarantine ./dist/c3bot/c3bot

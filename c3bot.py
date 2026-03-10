@@ -91,9 +91,9 @@ def handle_cmd(cmd):
                 return_text = result.stderr
 
         except subprocess.TimeoutExpired:
-            return f'❌ Time-out after {TIMEOUT_SEC}s'
+            return [f'❌ Time-out after {TIMEOUT_SEC}s']
         except Exception as e:
-            return f'❌ Exception: {str(e)}'
+            return [f'❌ Exception: {str(e)}']
 
     # Send return text. Split long text into separate messages.
     if return_text == '':
@@ -104,11 +104,13 @@ def handle_cmd(cmd):
         if len(return_text) < 4096:
             if len(return_text) > 0:
                 return_msgs.append(return_text)
-            return
+            break
 
         send_text = return_text[0:4096]
         return_text = return_text[4096:]
         return_msgs.append(send_text)
+
+    return return_msgs
 
 
 async def main():

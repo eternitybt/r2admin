@@ -21,7 +21,7 @@ os.system(f"rm -f {CWD/'logs'/'r2bot.out.log'}")
 os.system(f"rm -f {CWD/'logs'/'r2bot.err.log'}")
 
 # Create client.
-client = TelegramClient('userbot_session', API_ID, API_HASH)
+client = TelegramClient(CWD/'userbot_session', API_ID, API_HASH)
 
 # Command handler.
 def handle_cmd(cmd):

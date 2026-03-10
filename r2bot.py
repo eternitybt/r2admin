@@ -85,7 +85,7 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 text=True,
                 encoding='utf-8',
                 errors='replace',           # avoid UnicodeDecodeError crashes
-                cwd='/Users/joel/.r2admin', # necessary when launced via launchctl
+                cwd='/Users/joel/.r2bot',   # necessary when launced via launchctl
                 timeout=TIMEOUT_SEC,
                 check=False                 # don't raise exception on non-zero exit
             )

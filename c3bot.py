@@ -66,10 +66,10 @@ def handle_cmd(cmd):
     else:
         # Execute command.
         try:
-            # Authorize request.
-            user_id = str(update.effective_user.id)
-            if user_id != CHAT_ID:
-                return f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").'
+            ## Authorize request.
+            #user_id = str(update.effective_user.id)
+            #if user_id != CHAT_ID:
+            #    return f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").'
 
             result = subprocess.run(
                 cmd.split(),

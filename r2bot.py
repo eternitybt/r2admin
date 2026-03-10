@@ -120,21 +120,21 @@ try:
         return return_msgs
 
 
-    #async def main():
-    #    # Listen for responses from bot.
-    #    @client.on(events.NewMessage(from_users=BOT_USERNAME))
-    #    async def handler(event):
-    #        cmd = event.message.text.strip()
-    #        print(f'Received from bot: {cmd}', flush=True)
-    #        return_msgs = handle_cmd(cmd)
-    #        print(return_msgs, flush=True)
-    #        for msg in return_msgs:
-    #            #await event.reply(msg)
-    #            await client.send_message(bot_entity, msg)
+    async def main():
+        # Listen for responses from bot.
+        @client.on(events.NewMessage(from_users=BOT_USERNAME))
+        async def handler(event):
+            cmd = event.message.text.strip()
+            print(f'Received from bot: {cmd}', flush=True)
+            return_msgs = handle_cmd(cmd)
+            print(return_msgs, flush=True)
+            for msg in return_msgs:
+                #await event.reply(msg)
+                await client.send_message(bot_entity, msg)
 
-    #    await client.run_until_disconnected()
+        await client.run_until_disconnected()
 
-    # Run the client
+    # Run the client.
     with client:
         # Start client (will prompt for login code if needed).
         client.start(phone=PHONE)
@@ -147,19 +147,7 @@ try:
         print(f'✅ Connected with bot {BOT_USERNAME}.', flush=True)
         
         # Main loop.
-        #client.loop.run_until_complete(main())
-
-        # Listen for responses from bot.
-        @client.on(events.NewMessage(from_users=BOT_USERNAME))
-        def handler(event):
-            cmd = event.message.text.strip()
-            print(f'Received from bot: {cmd}', flush=True)
-            return_msgs = handle_cmd(cmd)
-            print(return_msgs, flush=True)
-            for msg in return_msgs:
-                client.send_message(bot_entity, msg)
-
-        client.run_until_disconnected()
+        client.loop.run_until_complete(main())
 
 except Exception as e:
     print(f'❌ Uncaught exception: {str(e)}', flush=True)

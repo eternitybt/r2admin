@@ -72,7 +72,7 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # Authorize request.
             user_id = str(update.effective_user.id)
             if user_id != CHAT_ID:
-                await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
+                await update.message.reply_text(f'Not authorized (id: '{user_id}', allowed: '{CHAT_ID}').')
                 return
 
             #result = subprocess.run(
@@ -83,11 +83,11 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 cmd.split(),
                 capture_output=True,
                 text=True,
-                encoding="utf-8",
-                errors="replace",       # avoid UnicodeDecodeError crashes
-                cwd=None,               # cwd = script dir (works also with pyinstaller)
+                encoding='utf-8',
+                errors='replace',           # avoid UnicodeDecodeError crashes
+                cwd='/Users/joel/.r2admin', # necessary when launced via launchctl
                 timeout=TIMEOUT_SEC,
-                check=False             # don't raise exception on non-zero exit
+                check=False                 # don't raise exception on non-zero exit
             )
 
             # Get return text.

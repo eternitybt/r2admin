@@ -121,16 +121,7 @@ try:
 
 
     async def main():
-        # Start the client (will prompt for login code if needed)
-        await client.start(phone=PHONE)
-        
-        # Get the entity for the bot (starts a chat if not already open)
-        bot_entity = await client.get_entity(BOT_USERNAME)
-        
-        # Send a message to the bot
-        await client.send_message(bot_entity, 'ready')
-        
-        # Listen for responses from the bot
+        # Listen for responses from bot.
         @client.on(events.NewMessage(from_users=BOT_USERNAME))
         async def handler(event):
             cmd = event.message.text.strip()
@@ -141,12 +132,21 @@ try:
                 #await event.reply(msg)
                 await client.send_message(bot_entity, msg)
 
-
-        print(f'✅ Connected with bot {BOT_USERNAME}.', flush=True)
         await client.run_until_disconnected()
 
     # Run the client
     with client:
+        # Start client (will prompt for login code if needed).
+        client.start(phone=PHONE)
+        
+        # Get entity for bot (start chat if not already open).
+        bot_entity = client.get_entity(BOT_USERNAME)
+        
+        # Send ready message to bot.
+        client.send_message(bot_entity, 'ready')
+        print(f'✅ Connected with bot {BOT_USERNAME}.', flush=True)
+        
+        # Main loop.
         client.loop.run_until_complete(main())
 
 except Exception as e:

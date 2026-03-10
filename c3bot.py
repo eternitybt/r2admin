@@ -8,7 +8,7 @@ TIMEOUT_SEC = 600
 API_ID = sys.argv[1]
 API_HASH = sys.argv[2]
 PHONE = sys.argv[3]
-BOT_USERNAME = 'c3po_cron_bot'
+BOT_USERNAME = sys.argv[4]
 
 print(f'API_ID: {API_ID}')
 print(f'API_HASH: {API_HASH}')

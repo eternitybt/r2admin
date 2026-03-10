@@ -31,17 +31,21 @@ try:
         # Check length of command.
         len_cmd = len(cmd)
         if len_cmd < 2:
-            return [f'❌ Command too short (len={len_cmd}).']
+            err_msg = f'❌ Command too short (len={len_cmd}).'
+            print(err_msg, flush=True)
+            return [err_msg]
 
         # Determine return type.
         if not cmd[0] in ['0', '1', '2', '3', '4', '5']:
-            return [f'''❌ First character must be a number indicating the return type:
+            err_msg = f'''❌ First character must be a number indicating the return type:
     0: returnvalue
     1: stdout
     2: stderr
     3: set timeout [s]
     4: write to a.txt
-    5: append to a.txt''']
+    5: append to a.txt'''
+            print('❌ Invalid command.', flush=True)
+            return [err_msg]
 
         return_type = int(cmd[0])
         cmd = cmd[1:]
@@ -50,25 +54,35 @@ try:
         if return_type == 3:
             try:
                 TIMEOUT_SEC = int(cmd)
-                return [f'TIMEOUT_SEC: {TIMEOUT_SEC}']
+                return_msg = f'TIMEOUT_SEC: {TIMEOUT_SEC}'
+                print('✅ Success.', flush=True)
+                return [return_msg]
             except:
-                return [f'❌ Error modifying timeout. TIMEOUT_SEC: {TIMEOUT_SEC}.']
+                err_msg = f'❌ Error modifying timeout. TIMEOUT_SEC: {TIMEOUT_SEC}.'
+                print(err_msg, flush=True)
+                return [err_msg]
 
         elif return_type == 4:
             try:
                 with open(CWD/'a.txt', 'w') as f:
                     f.write(cmd + '\n')
+                print('✅ Success.', flush=True)
                 return ['✅ Success.']
             except:
-                return [f'❌ Error writing to a.txt.']
+                err_msg = f'❌ Error writing to a.txt.'
+                print(err_msg, flush=True)
+                return [err_msg]
 
         elif return_type == 5:
             try:
                 with open(CWD/'a.txt', 'a') as f:
                     f.write(cmd + '\n')
+                print('✅ Success.', flush=True)
                 return ['✅ Success.']
             except:
-                return [f'❌ Error appending to a.txt.']
+                err_msg = f'❌ Error appending to a.txt.'
+                print(err_msg, flush=True)
+                return [err_msg]
 
         else:
             # Execute command.
@@ -96,11 +110,16 @@ try:
                     return_text = result.stdout
                 else:
                     return_text = result.stderr
+                print('✅ Command executed.', flush=True)
 
             except subprocess.TimeoutExpired:
-                return [f'❌ Time-out after {TIMEOUT_SEC}s']
+                err_msg = f'❌ Time-out after {TIMEOUT_SEC}s'
+                print(err_msg, flush=True)
+                return [err_msg]
             except Exception as e:
-                return [f'❌ Exception: {str(e)}']
+                err_msg = [f'❌ Exception: {str(e)}'
+                print(err_msg, flush=True)
+                return [err_msg]
 
         # Send return text. Split long text into separate messages.
         if return_text == '':

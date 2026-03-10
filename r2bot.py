@@ -160,7 +160,7 @@ try:
                 #await event.reply(msg)
                 await client.send_message(bot_entity, msg)
 
-        await client.run_until_disconnected()
+        client.run_until_disconnected()
 
 except Exception as e:
     print(f'❌ Uncaught exception: {str(e)}', flush=True)

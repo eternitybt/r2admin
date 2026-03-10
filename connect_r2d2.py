@@ -5,7 +5,7 @@ try:
     from telethon import TelegramClient, events, sync
     from pathlib import Path
 
-    CWD = Path('/Users/joel/.r2bot')
+    CWD = Path('/Users/joel/.connect_r2d2')
     TIMEOUT_SEC = 600
     API_ID = sys.argv[1]
     API_HASH = sys.argv[2]

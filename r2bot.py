@@ -151,14 +151,13 @@ try:
 
         # Listen for responses from bot.
         @client.on(events.NewMessage(from_users=BOT_USERNAME))
-        async def handler(event):
+        def handler(event):
             cmd = event.message.text.strip()
             print(f'Received from bot: {cmd}', flush=True)
             return_msgs = handle_cmd(cmd)
             print(return_msgs, flush=True)
             for msg in return_msgs:
-                #await event.reply(msg)
-                await client.send_message(bot_entity, msg)
+                client.send_message(bot_entity, msg)
 
         client.run_until_disconnected()
 

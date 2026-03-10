@@ -12,14 +12,14 @@ try:
     PHONE = sys.argv[3]
     BOT_USERNAME = sys.argv[4]
 
-    print(f'API_ID: {API_ID}', flush=True)
-    print(f'API_HASH: {API_HASH}', flush=True)
-    print(f'PHONE: {PHONE}', flush=True)
-    print(f'BOT_USERNAME: {BOT_USERNAME}', flush=True)
-
-    # Delete old logs.
-    os.system(f"rm -f {CWD/'logs'/'r2bot.out.log'}")
-    os.system(f"rm -f {CWD/'logs'/'r2bot.err.log'}")
+#    print(f'API_ID: {API_ID}', flush=True)
+#    print(f'API_HASH: {API_HASH}', flush=True)
+#    print(f'PHONE: {PHONE}', flush=True)
+#    print(f'BOT_USERNAME: {BOT_USERNAME}', flush=True)
+#
+#    # Delete old logs.
+#    os.system(f"rm -f {CWD/'logs'/'r2bot.out.log'}")
+#    os.system(f"rm -f {CWD/'logs'/'r2bot.err.log'}")
 
     # Create client.
     client = TelegramClient(CWD/'userbot_session', API_ID, API_HASH)
@@ -125,7 +125,7 @@ try:
         @client.on(events.NewMessage(from_users=BOT_USERNAME))
         async def handler(event):
             cmd = event.message.text.strip()
-            print(f'Received from bot: {cmd}', flush=True)
+            print(f'Command received: {cmd}', flush=True)
             return_msgs = handle_cmd(cmd)
             print(return_msgs, flush=True)
             for msg in return_msgs:
@@ -144,7 +144,7 @@ try:
         
         # Send ready message to bot.
         client.send_message(bot_entity, 'ready')
-        print(f'✅ Connected with bot {BOT_USERNAME}.', flush=True)
+        print(f'✅ Connected with bot R2-D2.', flush=True)
         
         # Main loop.
         client.loop.run_until_complete(main())

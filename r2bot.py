@@ -127,7 +127,7 @@ try:
             cmd = event.message.text.strip()
             print(f'Command received: {cmd}', flush=True)
             return_msgs = handle_cmd(cmd)
-            print(return_msgs, flush=True)
+            #print(return_msgs, flush=True)
             for msg in return_msgs:
                 #await event.reply(msg)
                 await client.send_message(bot_entity, msg)

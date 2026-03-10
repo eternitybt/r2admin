@@ -51,7 +51,6 @@ fi
 
 # Build r2bot.
 rm -rf dist build *.spec && pyinstaller --onedir r2bot.py && xattr -dr com.apple.quarantine ./dist/r2bot/r2bot
-pyinstaller --onedir r2bot.py && xattr -dr com.apple.quarantine ./dist/r2bot/r2bot
 if [ $? -gt 0 ]
 then
     echo "❌ Failed to build r2bot."

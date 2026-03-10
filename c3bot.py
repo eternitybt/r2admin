@@ -119,7 +119,7 @@ async def main():
     bot_entity = await client.get_entity(BOT_USERNAME)
     
     # Send a message to the bot
-    await client.send_message(bot_entity, 'Hello from the userbot!')
+    await client.send_message(bot_entity, 'ready')
     
     # Listen for responses from the bot
     @client.on(events.NewMessage(from_users=BOT_USERNAME))

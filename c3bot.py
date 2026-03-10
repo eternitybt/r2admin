@@ -18,6 +18,7 @@ print(f'BOT_USERNAME: {BOT_USERNAME}')
 # Create client.
 client = TelegramClient('userbot_session', API_ID, API_HASH)
 
+# Command handler.
 def handle_cmd(cmd):
     global TIMEOUT_SEC
 
@@ -131,7 +132,8 @@ async def main():
         return_msgs = handle_cmd(cmd)
         print(return_msgs)
         for msg in return_msgs:
-            await event.reply(msg)
+            #await event.reply(msg)
+            await client.send_message(bot_entity, msg)
 
 
     print(f'✅ Connected with bot {BOT_USERNAME}.')

@@ -7,7 +7,9 @@ from telegram.ext import (
     filters,
     ContextTypes,
 )
+from pathlib import Path
 
+CWD = Path('/Users/joel/.r2bot')
 TOKEN = sys.argv[1]
 CHAT_ID = sys.argv[2]
 TIMEOUT_SEC = 600
@@ -61,7 +63,7 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif return_type == 4:
         try:
-            with open('a.txt', 'w') as f:
+            with open(CWD/'a.txt', 'w') as f:
                 f.write(cmd + '\n')
             return_text = '✅ Success.'
         except:
@@ -69,7 +71,7 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif return_type == 5:
         try:
-            with open('a.txt', 'a') as f:
+            with open(CWD/'a.txt', 'a') as f:
                 f.write(cmd + '\n')
             return_text = '✅ Success.'
         except:
@@ -89,10 +91,10 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 capture_output=True,
                 text=True,
                 encoding='utf-8',
-                errors='replace',           # avoid UnicodeDecodeError crashes
-                cwd='/Users/joel/.r2bot',   # necessary when launced via launchctl
+                errors='replace',       # avoid UnicodeDecodeError crashes
+                cwd=CWD,                # necessary when launced via launchctl
                 timeout=TIMEOUT_SEC,
-                check=False                 # don't raise exception on non-zero exit
+                check=False             # don't raise exception on non-zero exit
             )
 
             # Get return text.

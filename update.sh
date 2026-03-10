@@ -53,7 +53,7 @@ fi
 rm -rf dist build *.spec && pyinstaller --onedir connect_r2d2.py && xattr -dr com.apple.quarantine ./dist/connect_r2d2/connect_r2d2
 if [ $? -gt 0 ]
 then
-    echo "❌ Build failed.
+    echo "❌ Build failed."
     exit $ERR_BUILD
 fi
 

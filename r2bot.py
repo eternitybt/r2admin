@@ -38,14 +38,15 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     # Determine return type.
-    if not cmd[0] in ['0', '1', '2', '3', '4']:
+    if not cmd[0] in ['0', '1', '2', '3', '4', '5']:
         await update.message.reply_text(
         f'''❌ First character must be a number indicating the return type:
 0: returnvalue
 1: stdout
 2: stderr
 3: set timeout [s]
-4: append to a.txt''')
+4: write to a.txt
+5: append to a.txt''')
         return
     return_type = int(cmd[0])
     cmd = cmd[1:]
@@ -60,11 +61,19 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif return_type == 4:
         try:
-            with open('a.txt', 'a') as f:
+            with open('a.txt', 'w') as f:
                 f.write(cmd + '\n')
             return_text = '✅ Success.'
         except:
             return_text = f'❌ Error writing to a.txt.'
+
+    elif return_type == 5:
+        try:
+            with open('a.txt', 'a') as f:
+                f.write(cmd + '\n')
+            return_text = '✅ Success.'
+        except:
+            return_text = f'❌ Error appending to a.txt.'
 
     else:
         # Execute command.
@@ -75,10 +84,6 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
                 return
 
-            #result = subprocess.run(
-            #        cmd.split(),
-            #        capture_output=True,
-            #        text=True)
             result = subprocess.run(
                 cmd.split(),
                 capture_output=True,

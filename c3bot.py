@@ -18,7 +18,7 @@ print(f'BOT_USERNAME: {BOT_USERNAME}')
 # Create client.
 client = TelegramClient('userbot_session', API_ID, API_HASH)
 
-def command(cmd):
+def handle_cmd(cmd):
     global TIMEOUT_SEC
 
     # Check length of command.

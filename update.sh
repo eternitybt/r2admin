@@ -32,6 +32,7 @@ else
     pip install --upgrade pip                   ; NE=$((NE + $?))
     pip install --upgrade pyinstaller           ; NE=$((NE + $?))
     pip install --upgrade python-telegram-bot   ; NE=$((NE + $?))
+    pip install --upgrade telethon              ; NE=$((NE + $?))
     if [ $NE -gt 0 ]
     then
         echo "❌ Failed to install Python dependencies."
@@ -48,11 +49,19 @@ then
     exit $ERR_GIT_UPDATE
 fi
 
-# Build bot.
+# Build r2bot.
 rm -rf dist build *.spec && pyinstaller --onedir r2bot.py && xattr -dr com.apple.quarantine ./dist/r2bot/r2bot
 if [ $? -gt 0 ]
 then
-    echo "❌ Build error."
+    echo "❌ Failed to build r2bot."
+    exit $ERR_BUILD
+fi
+
+# Build c3bot.
+pyinstaller --onedir c3bot.py && xattr -dr com.apple.quarantine ./dist/c3bot/c3bot
+if [ $? -gt 0 ]
+then
+    echo "❌ Failed to build c3bot."
     exit $ERR_BUILD
 fi
 

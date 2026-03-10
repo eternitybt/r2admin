@@ -49,7 +49,7 @@ then
 fi
 
 # Build bot.
-rm -rf dist build *.spec && pyinstaller --onedir tgbot.py && xattr -dr com.apple.quarantine ./dist/tgbot/tgbot
+rm -rf dist build *.spec && pyinstaller --onedir r2bot.py && xattr -dr com.apple.quarantine ./dist/r2bot/r2bot
 if [ $? -gt 0 ]
 then
     echo "❌ Build error."

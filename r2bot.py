@@ -1,4 +1,4 @@
-import os
+import sys
 import subprocess
 from telegram import Update
 from telegram.ext import (
@@ -8,8 +8,8 @@ from telegram.ext import (
     ContextTypes,
 )
 
-CHAT_ID = os.getenv('TG_CHAT_ID')
-TOKEN = os.getenv('TG_CRON_BOT_TOKEN')
+TOKEN = sys.argv[1]
+CHAT_ID = sys.argv[2]
 TIMEOUT_SEC = 600
 
 

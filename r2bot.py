@@ -1,3 +1,4 @@
+import os
 import sys
 import subprocess
 from telethon import TelegramClient, events, sync
@@ -14,6 +15,10 @@ print(f'API_ID: {API_ID}', flush=True)
 print(f'API_HASH: {API_HASH}', flush=True)
 print(f'PHONE: {PHONE}', flush=True)
 print(f'BOT_USERNAME: {BOT_USERNAME}', flush=True)
+
+# Delete old logs.
+os.system(f"rm -f {CWD/'logs'/'r2bot.out.log'}")
+os.system(f"rm -f {CWD/'logs'/'r2bot.err.log'}")
 
 # Create client.
 client = TelegramClient('userbot_session', API_ID, API_HASH)

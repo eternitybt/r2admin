@@ -117,7 +117,7 @@ try:
                 print(err_msg, flush=True)
                 return [err_msg]
             except Exception as e:
-                err_msg = [f'❌ Exception: {str(e)}'
+                err_msg = f'❌ Exception: {str(e)}'
                 print(err_msg, flush=True)
                 return [err_msg]
 

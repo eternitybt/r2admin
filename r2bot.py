@@ -72,7 +72,7 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # Authorize request.
             user_id = str(update.effective_user.id)
             if user_id != CHAT_ID:
-                await update.message.reply_text(f'Not authorized (id: '{user_id}', allowed: '{CHAT_ID}').')
+                await update.message.reply_text(f'Not authorized (id: "{user_id}", allowed: "{CHAT_ID}").')
                 return
 
             #result = subprocess.run(
